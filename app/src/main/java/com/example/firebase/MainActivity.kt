@@ -1,5 +1,6 @@
 package com.example.firebase
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -19,7 +20,12 @@ class MainActivity : AppCompatActivity() {
         val view = mainBinding.root
         setContentView(view)
 
+        mainBinding.floatingActionButton.setOnClickListener {
 
+            // floating action button clicked, open addUserActivity
+        val intent = Intent(this, AddUserActivity::class.java)
+        startActivity(intent)
+        }
 
     }
 }
