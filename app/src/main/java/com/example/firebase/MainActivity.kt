@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebase.databinding.ActivityMainBinding
 import com.google.firebase.database.*
 
@@ -17,6 +18,13 @@ class MainActivity : AppCompatActivity() {
     val database : FirebaseDatabase = FirebaseDatabase.getInstance()
     // get reference to our data object child  we want
     val myReference : DatabaseReference = database.reference.child("MyUsers")
+
+    // create an ArrayList Object, of type Users,  to hold Users Data
+    var userList = ArrayList<Users>()
+
+    // Create an instance of the Adapter class to use to get the data into
+    // the arrayList
+    lateinit var usersAdapter : UsersAdapter
 
 
 
@@ -44,6 +52,9 @@ class MainActivity : AppCompatActivity() {
         myReference.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
+                // clear the arrayList before adding the data
+                userList.clear()
+
                 // retrieve the data, loop through database child branch
                 for (eachuser in snapshot.children){
 
@@ -56,7 +67,21 @@ class MainActivity : AppCompatActivity() {
                         println("userAge: ${user.userAge}")
                         println("userEmail: ${user.userEmail}")
                         println("*******************************")
+
+                        // add user data to arrayList
+                        userList.add(user)
+
                     } // end IF
+
+                    // initialise the Adapter object
+                    // context , data object
+                    usersAdapter = UsersAdapter(this@MainActivity, userList)
+
+                    mainBinding.recyclerView.layoutManager =
+                        LinearLayoutManager(this@MainActivity)
+
+                    // set the adapter for the recyclerView
+                    mainBinding.recyclerView.adapter = usersAdapter
 
                 } // end FOR action for each user data
 
