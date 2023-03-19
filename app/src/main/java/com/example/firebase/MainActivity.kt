@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firebase.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
@@ -140,6 +141,16 @@ class MainActivity : AppCompatActivity() {
         if (item.itemId == R.id.deleteAll){
 
             showDialogMessage()
+
+        }else if (item.itemId == R.id.signOut){
+            // sign out of Firebase
+            FirebaseAuth.getInstance().signOut()
+            // start login page activity and close this one
+            // intent currentActivity / called activity
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
+            // close this activity
+            finish()
 
         }
         return super.onOptionsItemSelected(item)
